@@ -17,6 +17,6 @@ class Create:
         return self.connection.transactions.prepare(
                 operation='CREATE',
                 signers=self.user.public_key,
-                asset=self.asset,
-                metadata=self.asset.get_metadata()
-        )
+                asset=self.asset.json,
+                metadata=self.asset.metadata
+            )
