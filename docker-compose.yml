@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    web:
+        build: .
+        ports:
+            - "8884:5000"
+        volumes:
+            - .:/code
+        depends_on:
+            - redis
+    redis:
+        image: redis

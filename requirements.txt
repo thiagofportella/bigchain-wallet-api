@@ -1,0 +1,5 @@
+bigchaindb_driver
+flask
+redis
+base58
+base64
