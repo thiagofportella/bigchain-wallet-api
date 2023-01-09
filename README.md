@@ -3,6 +3,11 @@
 A api-based solution for managing BigchainDB assets in a crypto-wallet context
 
 ```python
+import base.transactions.create as create
+import base.transactions.transfer as transfer
+import base.user as user
+import base.connection as connection
+import base.asset as asset
 
 # Creates two different users, represented by keypairs:
 bob = user.User()
