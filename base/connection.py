@@ -1,8 +1,15 @@
 import bigchaindb_driver
 
-
-def create_connection(root_url):
-    return bigchaindb_driver.BigchainDB(root_url)
-
 class Connection:
-    pass
+    def __init__(self, root_url):
+        self.root_url = root_url
+        self.connection = None
+
+    def get_connection(self):
+        if self.connection is None:
+            self.connection = self.__create_connection()
+
+        return self.connection
+
+    def __create_connection(self):
+        return bigchaindb_driver.BigchainDB(self.root_url)
