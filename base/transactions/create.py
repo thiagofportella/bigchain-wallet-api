@@ -1,10 +1,11 @@
 import base.transaction as transaction_base
 
 class Create:
-    def __init__(self, connection, user, asset):
+    def __init__(self, connection, user, asset, metadata = None):
         self.connection = connection
         self.user = user
         self.asset = asset
+        self.metadata = metadata
 
     def execute(self):
         self.connection.transactions.send_commit(self.__fulfill_transaction())
@@ -26,5 +27,5 @@ class Create:
                 operation='CREATE',
                 signers=self.user.public_key,
                 asset=self.asset.json,
-                metadata=self.asset.metadata
+                metadata=self.metadata.json,
             )

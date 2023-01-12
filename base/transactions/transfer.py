@@ -20,9 +20,10 @@ class Transfer:
         )
 
         self.transaction = transferred_transaction.Transaction(transaction_id=transaction['id'],
-                                                           outputs=transaction['outputs'],
-                                                           connection=self.connection,
-                                                           owner_private_key=self.recipient.private_key)
+                                                                outputs=transaction['outputs'],
+                                                                connection=self.connection,
+                                                                owner=self.recipient,
+                                                                asset_id=self.asset_id)
 
         return transaction
 

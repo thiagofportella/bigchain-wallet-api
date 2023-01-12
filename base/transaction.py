@@ -1,15 +1,18 @@
 import base.transactions.transfer as transfer_transaction
 
 class Transaction:
-    def __init__(self, transaction_id, outputs, connection, owner_private_key):
+    def __init__(self, transaction_id, outputs, connection, owner, asset_id):
         self.transaction_id = transaction_id
         self.outputs = outputs
         self.connection = connection
-        self.owner_private_key = owner_private_key
+        self.owner = owner
+        self.asset_id = asset_id
 
-    def transfer(self, recipient):
+    def transfer(self, recipient, amount):
         return transfer_transaction.Transfer(connection=self.connection,
                                              transaction_id=self.transaction_id,
                                              outputs=self.outputs,
                                              recipient=recipient,
-                                             owner_private_key=self.owner_private_key).execute
+                                             owner=self.owner,
+                                             asset_id=self.asset_id,
+                                             amount=amount).execute
