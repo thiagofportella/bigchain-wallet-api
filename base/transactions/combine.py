@@ -21,7 +21,7 @@ class Combine:
 
             asset_id = transaction['asset']['id']
 
-        self.execute_transfer(inputs, asset_id, amount)
+        return self.execute_transfer(inputs, asset_id, amount)
 
     def execute_transfer(self, inputs, asset_id, amount):
         transaction = self.connection.transactions.fulfill(
@@ -44,7 +44,7 @@ class Combine:
             asset_id=asset_id
         )
 
-        return combined_transaction.transaction_id
+        return combined_transaction
 
     def input_blueprint(self, output, output_index, transaction_id):
         return {
