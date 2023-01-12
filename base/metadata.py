@@ -1,11 +1,11 @@
-class Asset:
-    def __init__(self, amount = 1, data = None):
-        self.amount = amount
+import datetime
 
+class Metadata:
+    def __init__(self, data=None):
         if data is None:
             self.json = self.__default_json()
         else:
             self.json = self.__default_json() | data
 
     def __default_json(self):
-        return { 'data': { 'asset': { 'coin': { 'amount': self.amount } } } }
+        return {'datetime': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
