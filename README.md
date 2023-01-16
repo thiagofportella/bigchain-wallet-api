@@ -1,27 +1,9 @@
-## Routes
-#### POST /signup
+#### Installation
 
-#### POST /asset
-##### Headers:
-    Public-Key
-    Public-Key
-    Network-Url
-#### Body:
-    amount
+The project contains a docker-compose setup. You can edit the default port mappings in `docker-compose.yml` file.
+To start the application, run in the project root directory:
 
+`docker-compose up`
 
-
-#### POST /asset/{asset_id}/transfer
-##### Headers:
-    Public-Key
-    Public-Key
-    Network-Url
-#### Body:
-    amount
-    recipient_public_key
-
-#### GET /asset
-##### Headers:
-    Public-Key
-    Public-Key
-    Network-Url
+#### Official API docs:
+https://documenter.getpostman.com/view/20019812/2s8ZDU6Q7i
