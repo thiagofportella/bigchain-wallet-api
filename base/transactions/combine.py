@@ -1,35 +1,53 @@
 import base.transaction as transaction_result
 
 class Combine:
-    def __init__(self, connection, user):
+    def __init__(self, connection, user, asset_id):
         self.connection = connection
         self.user = user
+        self.asset_id = asset_id
+
+        self.inputs = []
+        self.amount = 0
 
     def combine(self):
-        inputs = []
-        amount = 0
-        asset_id = None
-
         for output in self.owned_outputs():
             transaction = self.retrieve_transaction(output['transaction_id'])
+            if transaction['operation'] == 'CREATE':
+                if self.asset_id != transaction['id']:
+                    continue
+                else:
+                    return self.build_transaction_from_source(transaction)
+
+            if self.asset_id != transaction['asset']['id']:
+                continue
+
             output_index = output['output_index']
-            inputs.append(self.input_blueprint(transaction['outputs'][output_index],
+            self.append_inputs(transaction=transaction, output_index=output_index)
+            self.amount += int(transaction['outputs'][output_index]['amount'])
+
+        return self.execute_transfer()
+
+    def append_inputs(self, transaction, output_index):
+        self.inputs.append(self.input_blueprint(transaction['outputs'][output_index],
                                                output_index,
                                                transaction['id']))
 
-            amount += int(transaction['outputs'][output_index]['amount'])
+    def build_transaction_from_source(self, transaction):
+        return transaction_result.Transaction(
+            transaction_id=transaction['id'],
+            outputs=transaction['outputs'],
+            connection=self.connection,
+            owner_public_key=self.user.public_key,
+            asset_id={'id': transaction['id']}
+        )
 
-            asset_id = transaction['asset']['id']
-
-        return self.execute_transfer(inputs, asset_id, amount)
-
-    def execute_transfer(self, inputs, asset_id, amount):
+    def execute_transfer(self):
         transaction = self.connection.transactions.fulfill(
             self.connection.transactions.prepare(
                 operation='TRANSFER',
-                asset={'id': asset_id},
-                inputs=inputs,
-                recipients=[([self.user.public_key], amount)]
+                asset={'id': self.asset_id},
+                inputs=self.inputs,
+                recipients=[([self.user.public_key], self.amount)]
             ),
             private_keys=self.user.private_key
         )
@@ -40,8 +58,8 @@ class Combine:
             transaction_id=transaction['id'],
             outputs=transaction['outputs'],
             connection=self.connection,
-            owner=self.user,
-            asset_id=asset_id
+            owner_public_key=self.user.public_key,
+            asset_id=self.asset_id
         )
 
         return combined_transaction

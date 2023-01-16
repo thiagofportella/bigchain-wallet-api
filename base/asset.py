@@ -5,7 +5,7 @@ class Asset:
         if data is None:
             self.json = self.__default_json()
         else:
-            self.json = self.__default_json() | data
+            self.json = data
 
     def __default_json(self):
         return { 'data': { 'asset': { 'coin': { 'amount': self.amount } } } }

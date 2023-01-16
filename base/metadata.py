@@ -5,7 +5,7 @@ class Metadata:
         if data is None:
             self.json = self.__default_json()
         else:
-            self.json = self.__default_json() | data
+            self.json = data
 
     def __default_json(self):
         return {'datetime': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}

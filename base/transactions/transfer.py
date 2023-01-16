@@ -1,11 +1,11 @@
 import base.transaction as transferred_transaction
 
 class Transfer:
-    def __init__(self, connection, transaction_id, outputs, recipient, owner, asset_id, amount):
+    def __init__(self, connection, transaction_id, outputs, recipient_public_key, owner, asset_id, amount):
         self.connection = connection
         self.transaction_id = transaction_id
         self.outputs = outputs
-        self.recipient = recipient
+        self.recipient_public_key = recipient_public_key
         self.owner = owner
         self.asset_id = asset_id
         self.amount = amount
@@ -23,7 +23,7 @@ class Transfer:
         self.transaction = transferred_transaction.Transaction(transaction_id=transaction['id'],
                                                                 outputs=transaction['outputs'],
                                                                 connection=self.connection,
-                                                                owner=self.recipient,
+                                                                owner_public_key=self.recipient_public_key,
                                                                 asset_id=self.asset_id)
 
         return transaction
@@ -33,7 +33,7 @@ class Transfer:
                     operation='TRANSFER',
                     asset={ 'id': self.asset_id },
                     inputs=self.__transfer_input(),
-                    recipients= [([self.recipient.public_key], self.amount),
+                    recipients= [([self.recipient_public_key], self.amount),
                                  ([self.owner.public_key], self.original_amount - self.amount)]
                 )
 

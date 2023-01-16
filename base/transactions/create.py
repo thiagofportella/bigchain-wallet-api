@@ -1,7 +1,8 @@
 import base.transaction as transaction_base
+from base.metadata import Metadata
 
 class Create:
-    def __init__(self, connection, user, asset, metadata = None):
+    def __init__(self, connection, user, asset, metadata = Metadata()):
         self.connection = connection
         self.user = user
         self.asset = asset
@@ -19,7 +20,7 @@ class Create:
         self.transaction = transaction_base.Transaction(transaction_id=transaction['id'],
                                                         outputs=transaction['outputs'],
                                                         connection=self.connection,
-                                                        owner=self.user,
+                                                        owner_public_key=self.user.public_key,
                                                         asset_id=transaction['id'])
         return transaction
 
